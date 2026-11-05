@@ -85,19 +85,19 @@
               <!-- Left: Donut Chart -->
               <div class="order-health-chart">
                 <svg viewBox="0 0 200 200" class="donut-svg-compact">
-                  <circle cx="100" cy="100" r="65" fill="none" stroke="#e2e8f0" stroke-width="25"/>
-                  <circle cx="100" cy="100" r="65" fill="none" stroke="#10b981" stroke-width="25"
+                  <circle cx="100" cy="100" r="65" fill="none" stroke-width="25" class="donut-track"/>
+                  <circle cx="100" cy="100" r="65" fill="none" style="stroke: var(--success)" stroke-width="25"
                     :stroke-dasharray="`${getCircleSegment(statusData.delivered)} 408`"
                     stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
-                  <circle cx="100" cy="100" r="65" fill="none" stroke="#3b82f6" stroke-width="25"
+                  <circle cx="100" cy="100" r="65" fill="none" style="stroke: var(--info)" stroke-width="25"
                     :stroke-dasharray="`${getCircleSegment(statusData.shipped)} 408`"
                     :stroke-dashoffset="`-${getCircleSegment(statusData.delivered)}`"
                     transform="rotate(-90 100 100)"/>
-                  <circle cx="100" cy="100" r="65" fill="none" stroke="#f59e0b" stroke-width="25"
+                  <circle cx="100" cy="100" r="65" fill="none" style="stroke: var(--warning)" stroke-width="25"
                     :stroke-dasharray="`${getCircleSegment(statusData.processing)} 408`"
                     :stroke-dashoffset="`-${getCircleSegment(statusData.delivered) + getCircleSegment(statusData.shipped)}`"
                     transform="rotate(-90 100 100)"/>
-                  <circle cx="100" cy="100" r="65" fill="none" stroke="#ef4444" stroke-width="25"
+                  <circle cx="100" cy="100" r="65" fill="none" style="stroke: var(--danger)" stroke-width="25"
                     :stroke-dasharray="`${getCircleSegment(statusData.backordered)} 408`"
                     :stroke-dashoffset="`-${getCircleSegment(statusData.delivered) + getCircleSegment(statusData.shipped) + getCircleSegment(statusData.processing)}`"
                     transform="rotate(-90 100 100)"/>
@@ -105,10 +105,10 @@
                   <text x="100" y="120" text-anchor="middle" class="donut-center-value">{{ orderHealthMetrics.totalOrders }}</text>
                 </svg>
                 <div class="donut-legend-compact">
-                  <div class="legend-item-compact"><span class="legend-dot" style="background: #10b981"></span>{{ t('status.delivered') }}</div>
-                  <div class="legend-item-compact"><span class="legend-dot" style="background: #3b82f6"></span>{{ t('status.shipped') }}</div>
-                  <div class="legend-item-compact"><span class="legend-dot" style="background: #f59e0b"></span>{{ t('status.processing') }}</div>
-                  <div class="legend-item-compact"><span class="legend-dot" style="background: #ef4444"></span>{{ t('status.backordered') }}</div>
+                  <div class="legend-item-compact"><span class="legend-dot" style="background: var(--success)"></span>{{ t('status.delivered') }}</div>
+                  <div class="legend-item-compact"><span class="legend-dot" style="background: var(--info)"></span>{{ t('status.shipped') }}</div>
+                  <div class="legend-item-compact"><span class="legend-dot" style="background: var(--warning)"></span>{{ t('status.processing') }}</div>
+                  <div class="legend-item-compact"><span class="legend-dot" style="background: var(--danger)"></span>{{ t('status.backordered') }}</div>
                 </div>
               </div>
 
@@ -148,9 +148,9 @@
                 <div class="h-bar-label">{{ translateCategory(cat.name) }}</div>
                 <div class="h-bar-container">
                   <div class="h-bar" :style="{ width: (cat.value / maxCategoryValue * 100) + '%', background: cat.color }">
-                    <span class="h-bar-value">{{ selectedCurrency === 'JPY' ? formatCurrency(cat.value, selectedCurrency) : `$${(cat.value / 1000).toFixed(1)}K` }}</span>
                   </div>
                 </div>
+                <span class="h-bar-value">{{ selectedCurrency === 'JPY' ? formatCurrency(cat.value, selectedCurrency) : `$${(cat.value / 1000).toFixed(1)}K` }}</span>
               </div>
             </div>
             <div v-else class="no-data">{{ t('dashboard.inventoryShortages.noData') }}</div>
@@ -199,7 +199,7 @@
                     </span>
                   </td>
                   <td @click="showBacklogDetail(item)" style="cursor: pointer;">
-                    <span :style="{ color: item.days_delayed > 7 ? '#ef4444' : '#f59e0b', fontWeight: 600 }">
+                    <span :style="{ color: item.days_delayed > 7 ? 'var(--danger)' : 'var(--warning)', fontWeight: 600 }">
                       {{ item.days_delayed }} {{ t('dashboard.inventoryShortages.days') }}
                     </span>
                   </td>
@@ -409,7 +409,7 @@ export default {
       const categoryMap = {}
 
       // Use a single neutral slate/gray color for all categories
-      const singleColor = '#64748b' // Neutral slate gray color
+      const singleColor = 'var(--accent)'
 
       // Get SKUs from orders in the filtered time period
       const orderedSkus = new Set()
@@ -727,6 +727,10 @@ export default {
 </script>
 
 <style scoped>
+.donut-track {
+  stroke: var(--surface-2);
+}
+
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -736,7 +740,7 @@ export default {
 
 .header-meta {
   font-size: 0.813rem;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .kpi-section {
@@ -746,9 +750,7 @@ export default {
 .section-title {
   font-size: 1rem;
   font-weight: 600;
-  color: #475569;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: var(--text-muted);
   margin-bottom: 1rem;
 }
 
@@ -759,10 +761,9 @@ export default {
 }
 
 .kpi-card {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 1rem;
+  background: var(--card);
+  border-radius: var(--r);
+  padding: 1.25rem;
 }
 
 .kpi-header {
@@ -770,49 +771,50 @@ export default {
 }
 
 .kpi-label {
-  font-size: 0.813rem;
-  font-weight: 600;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
 }
 
 .kpi-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #0f172a;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 0.9rem + 1.3vw, 2.25rem);
+  overflow-wrap: anywhere;
+  font-weight: 600;
+  color: var(--text);
   margin-bottom: 0.5rem;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
 }
 
 .kpi-goal {
   font-size: 0.813rem;
-  color: #64748b;
+  color: var(--text-muted);
   margin-bottom: 0.75rem;
 }
 
 .kpi-progress-bar {
   width: 100%;
-  height: 6px;
-  background: #f1f5f9;
-  border-radius: 3px;
+  height: 4px;
+  background: var(--surface-2);
+  border-radius: var(--r-pill);
   overflow: hidden;
 }
 
 .kpi-progress {
   height: 100%;
-  background: #3b82f6;
-  border-radius: 3px;
+  background: var(--accent);
+  border-radius: var(--r-pill);
   transition: width 0.6s ease;
 }
 
 .kpi-progress.success {
-  background: #10b981;
+  background: var(--success);
 }
 
 .charts-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
   gap: 1.25rem;
   margin-bottom: 1.5rem;
 }
@@ -848,19 +850,19 @@ export default {
   align-items: center;
   gap: 0.625rem;
   font-size: 0.875rem;
-  color: #475569;
+  color: var(--text-muted);
 }
 
 .legend-dot {
   width: 10px;
   height: 10px;
-  border-radius: 2px;
+  border-radius: var(--r-pill);
 }
 
 /* Order Health Dashboard Styles */
 .order-health-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
   align-items: center;
   padding: 1rem;
@@ -883,16 +885,17 @@ export default {
 
 .donut-center-label {
   font-size: 12px;
-  fill: #64748b;
+  fill: var(--text-muted);
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .donut-center-value {
+  font-family: var(--font-display);
   font-size: 36px;
-  fill: #0f172a;
-  font-weight: 700;
+  fill: var(--text);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
 }
 
 .donut-legend-compact {
@@ -906,7 +909,7 @@ export default {
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: #475569;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
@@ -927,30 +930,31 @@ export default {
 }
 
 .health-metric-label {
-  font-size: 0.688rem;
-  color: #64748b;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 .health-metric-value {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #0f172a;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  overflow-wrap: anywhere;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
 }
 
 .metric-good {
-  color: #10b981;
+  color: var(--success);
 }
 
 .metric-warning {
-  color: #f59e0b;
+  color: var(--warning);
 }
 
 .metric-bad {
-  color: #ef4444;
+  color: var(--danger);
 }
 
 .horizontal-bar-chart {
@@ -970,32 +974,34 @@ export default {
   width: 120px;
   min-width: 120px;
   font-size: 0.875rem;
-  font-weight: 600;
-  color: #475569;
+  font-weight: 500;
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 
 .h-bar-container {
   flex: 1;
-  height: 32px;
-  background: #f8fafc;
-  border-radius: 6px;
+  min-width: 0;
+  height: 10px;
+  background: var(--surface-2);
+  border-radius: var(--r-pill);
   overflow: hidden;
 }
 
 .h-bar {
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 0.75rem;
+  border-radius: var(--r-pill);
   transition: width 0.6s ease;
 }
 
 .h-bar-value {
-  font-size: 0.813rem;
-  font-weight: 700;
-  color: white;
+  min-width: 4.5rem;
+  text-align: right;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .line-chart {
@@ -1010,8 +1016,7 @@ export default {
   justify-content: space-between;
   padding-right: 1rem;
   font-size: 0.75rem;
-  color: #94a3b8;
-  border-right: 1px solid #e2e8f0;
+  color: var(--text-dim);
 }
 
 .line-chart-area {
@@ -1044,40 +1049,39 @@ export default {
   width: 100%;
   max-width: 60px;
   min-height: 8px;
-  background: #3b82f6;
-  border-radius: 6px 6px 0 0;
+  background: var(--accent);
+  border-radius: var(--r-sm) var(--r-sm) 0 0;
   transition: all 0.3s ease;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+  box-shadow: none;
 }
 
 .line-bar.empty-bar {
-  background: #e2e8f0;
+  background: var(--surface-2);
   box-shadow: none;
   min-height: 4px;
 }
 
 .line-bar:hover {
-  background: #2563eb;
-  transform: scaleY(1.05);
+  opacity: 0.85;
 }
 
 .line-bar.empty-bar:hover {
-  background: #cbd5e1;
+  background: var(--surface-2);
   transform: none;
 }
 
 .line-bar-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #64748b;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
 .no-data {
   padding: 2rem;
   text-align: center;
-  color: #94a3b8;
+  color: var(--text-dim);
   font-size: 0.875rem;
 }
 
@@ -1093,12 +1097,12 @@ export default {
 .success-icon {
   width: 48px;
   height: 48px;
-  color: #10b981;
+  color: var(--success);
 }
 
 .no-backlog-text {
   font-size: 1.125rem;
-  color: #10b981;
+  color: var(--success);
   font-weight: 600;
   margin: 0;
 }
@@ -1109,7 +1113,7 @@ export default {
 }
 
 .clickable-row:hover {
-  background: #eff6ff !important;
+  background: var(--card-hover) !important;
 }
 
 /* Tasks Card Styles */
@@ -1129,31 +1133,33 @@ export default {
 
 .task-input {
   flex: 1;
-  padding: 0.75rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  padding: 0.75rem 1.125rem;
+  border: none;
+  background: var(--surface-2);
+  color: var(--text);
+  border-radius: var(--r-pill);
   font-size: 0.95rem;
   transition: border-color 0.2s ease;
 }
 
 .task-input:focus {
-  outline: none;
-  border-color: #667eea;
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 
 .task-add-btn {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--text);
+  color: var(--bg);
   border: none;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: var(--r-pill);
+  font-weight: 500;
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .task-add-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
+  opacity: 0.9;
 }
 
 .task-add-btn:disabled {
@@ -1164,7 +1170,7 @@ export default {
 .no-tasks {
   text-align: center;
   padding: 2rem;
-  color: #64748b;
+  color: var(--text-muted);
   font-style: italic;
 }
 
@@ -1178,16 +1184,14 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem;
-  background: #f8fafc;
-  border-radius: 8px;
-  border: 2px solid transparent;
-  transition: all 0.2s ease;
+  padding: 0.75rem 1rem;
+  background: var(--surface-2);
+  border-radius: var(--r-sm);
+  transition: background 0.2s ease;
 }
 
 .task-item:hover {
-  border-color: #e2e8f0;
-  background: white;
+  background: var(--card-hover);
 }
 
 .task-item.completed {
@@ -1196,31 +1200,31 @@ export default {
 
 .task-item.completed .task-text {
   text-decoration: line-through;
-  color: #94a3b8;
+  color: var(--text-dim);
 }
 
 .task-checkbox {
   width: 20px;
   height: 20px;
   cursor: pointer;
-  accent-color: #667eea;
+  accent-color: var(--accent);
 }
 
 .task-text {
   flex: 1;
   cursor: pointer;
   user-select: none;
-  color: #0f172a;
+  color: var(--text);
   font-size: 0.95rem;
 }
 
 .task-delete-btn {
   width: 28px;
   height: 28px;
-  background: #ef4444;
-  color: white;
+  background: var(--danger-tint);
+  color: var(--danger);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--r-pill);
   font-size: 1.25rem;
   line-height: 1;
   cursor: pointer;
@@ -1232,40 +1236,32 @@ export default {
 }
 
 .task-delete-btn:hover {
-  background: #dc2626;
-  transform: scale(1.1);
+  background: var(--danger);
+  color: var(--bg);
 }
 
 .po-button {
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 6px;
-  font-size: 0.813rem;
-  font-weight: 600;
+  border-radius: var(--r-pill);
+  font-size: 0.8125rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
 }
 
 .po-button.create {
-  background: #3b82f6;
-  color: white;
-}
-
-.po-button.create:hover {
-  background: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+  background: var(--text);
+  color: var(--bg);
 }
 
 .po-button.view {
-  background: #64748b;
-  color: white;
+  background: var(--surface-2);
+  color: var(--text);
 }
 
-.po-button.view:hover {
-  background: #475569;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(100, 116, 139, 0.3);
+.po-button:hover {
+  opacity: 0.85;
 }
 </style>

@@ -322,11 +322,10 @@ export default {
 }
 
 .card {
-  background: white;
-  border-radius: 12px;
+  background: var(--card);
+  border-radius: var(--r);
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
@@ -336,7 +335,7 @@ export default {
 .card-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--text);
   margin: 0;
 }
 
@@ -346,26 +345,28 @@ export default {
 }
 
 .reports-table th {
-  background: #f8fafc;
   padding: 0.75rem;
   text-align: left;
-  font-weight: 600;
-  color: #64748b;
-  border-bottom: 2px solid #e2e8f0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
 }
 
 .reports-table td {
   padding: 0.75rem;
-  border-bottom: 1px solid #e2e8f0;
+  font-variant-numeric: tabular-nums;
+  border-bottom: 1px solid var(--border);
 }
 
 .reports-table tr:hover {
-  background: #f8fafc;
+  background: var(--card-hover);
 }
 
 .chart-container {
-  padding: 2rem 1rem;
+  padding: 2rem 0.5rem;
   min-height: 300px;
+  overflow-x: auto;
 }
 
 .bar-chart {
@@ -381,6 +382,7 @@ export default {
   flex-direction: column;
   align-items: center;
   flex: 1;
+  min-width: 0;
   max-width: 80px;
 }
 
@@ -393,96 +395,102 @@ export default {
 
 .bar {
   width: 100%;
-  background: linear-gradient(to top, #3b82f6, #60a5fa);
-  border-radius: 4px 4px 0 0;
+  background: var(--accent);
+  border-radius: var(--r-sm) var(--r-sm) 0 0;
   transition: all 0.3s;
   cursor: pointer;
 }
 
 .bar:hover {
-  background: linear-gradient(to top, #2563eb, #3b82f6);
+  opacity: 0.85;
 }
 
 .bar-label {
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-  color: #64748b;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
   text-align: center;
   transform: rotate(-45deg);
   white-space: nowrap;
   margin-top: 1.5rem;
 }
 
+@media (max-width: 640px) {
+  .bar-chart { gap: 2px; }
+  .bar-label { font-size: 0.6875rem; }
+}
+
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
   gap: 1rem;
   margin-top: 1.5rem;
 }
 
 .stat-card {
-  background: white;
-  border-radius: 12px;
+  background: var(--card);
+  border-radius: var(--r);
   padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #3b82f6;
 }
 
 .stat-label {
   font-size: 0.875rem;
-  color: #64748b;
+  font-weight: 500;
+  color: var(--text-muted);
   margin-bottom: 0.5rem;
 }
 
 .stat-value {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: #0f172a;
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
 }
 
 .badge {
   padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
+  border-radius: var(--r-pill);
   font-size: 0.875rem;
   font-weight: 500;
 }
 
 .badge.success {
-  background: #dcfce7;
-  color: #166534;
+  background: var(--success-tint);
+  color: var(--success);
 }
 
 .badge.warning {
-  background: #fef3c7;
-  color: #92400e;
+  background: var(--warning-tint);
+  color: var(--warning);
 }
 
 .badge.danger {
-  background: #fee2e2;
-  color: #991b1b;
+  background: var(--danger-tint);
+  color: var(--danger);
 }
 
 .positive-change {
-  color: #16a34a;
-  font-weight: 600;
+  color: var(--success);
+  font-weight: 500;
 }
 
 .negative-change {
-  color: #dc2626;
-  font-weight: 600;
+  color: var(--danger);
+  font-weight: 500;
 }
 
 .loading {
   text-align: center;
   padding: 3rem;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .error {
-  background: #fee2e2;
-  color: #991b1b;
+  background: var(--danger-tint);
+  color: var(--danger);
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: var(--r-sm);
   margin: 1rem 0;
 }
 </style>
